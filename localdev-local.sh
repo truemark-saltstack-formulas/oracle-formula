@@ -6,12 +6,16 @@
 
 set -uex
 
-mkdir salt-oracle
+mkdir -p salt-oracle
 cd salt-oracle
-mkdir pillar
-mkdir ext_pillar
-mkdir salt
-mkdir formulas
+mkdir -p pillar
+mkdir -p ext_pillar
+mkdir -p salt
+mkdir -p formulas
 cd formulas
-git clone git@github.com:truemark-saltstack-formulas/oracle-formula.git 
-git clone git@github.com:truemark-saltstack-formulas/proservices-formula.git
+if [ ! -d oracle-formula ]; then
+    git clone git@github.com:truemark-saltstack-formulas/oracle-formula.git
+fi
+if [ ! -d proservices-formula ]; then
+    git clone git@github.com:truemark-saltstack-formulas/proservices-formula.git
+fi
