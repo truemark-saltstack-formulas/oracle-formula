@@ -47,5 +47,5 @@ specifications:
 4. SSH to the Oracle Salt Master virtual machine you setup, execute the following as the root user
 
     ```bash
-    
+    bash < <(curl -s https://raw.githubusercontent.com/truemark-saltstack-formulas/oracle-formula/master/localdev-master.sh)
     ```
