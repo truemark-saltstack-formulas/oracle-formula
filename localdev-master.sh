@@ -14,8 +14,10 @@ sleep 5
 
 sh /etc/rc.local
 
+sed -i -e 's/localhost/localhost salt/'  /etc/hosts
+
 cd /root
 
 curl -L https://bootstrap.saltstack.com -o install_salt.sh
-sudo sh install_salt.sh -M stable
+sh install_salt.sh -M stable
 
