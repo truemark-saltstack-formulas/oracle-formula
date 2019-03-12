@@ -4,6 +4,8 @@
 # To execute this script run the following:
 # bash < <(curl -s https://raw.githubusercontent.com/truemark-saltstack-formulas/oracle-formula/master/localdev-local.sh)
 
+set -uex
+
 mkdir salt-oracle
 cd salt-oracle
 mkdir pillar
