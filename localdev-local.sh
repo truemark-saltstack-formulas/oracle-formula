@@ -1,5 +1,9 @@
 #!/usr/bin/env bash
 
+# This is a simple script to setup a folder structure for local development.
+# To execute this script run the following:
+# bash < <(curl -s https://raw.githubusercontent.com/truemark-saltstack-formulas/oracle-formula/master/localdev-local.sh)
+
 mkdir salt-oracle
 cd salt-oracle
 mkdir pillar
