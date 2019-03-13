@@ -1,4 +1,24 @@
 tmoracle:
-    os:
-        uid: oracle
-        gid: oinstall
+  asm:
+    diskgroups:
+      DATA:
+        - /dev/sdc
+      FRA:
+        - /dev/sdc
+  grid:
+    home: /u01/app/12.2.0.1/grid
+    version: 12.2.0.1
+    download:
+      location: https://.....
+      username: XXX
+      password: XXX
+  db:
+    base: /u01/app/oracle
+    homes:
+      product/12.1.0.2/dbhome_1:
+          version: 12.1.0.2
+      product/11.2.0.4/dbhome_1:
+          version: 11.2.0.4
+      product/12.2.0.1/dbhome_1:
+          version: 12.2.0.1
+
