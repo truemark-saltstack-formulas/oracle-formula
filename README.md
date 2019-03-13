@@ -24,7 +24,7 @@ the directory you execute the script and setup a good folder structure for salt.
     bash < <(curl -s https://raw.githubusercontent.com/truemark-saltstack-formulas/oracle-formula/master/localdev-local.sh)
     ```
     
-2. Using the truemark-vmware-ol-7.6-server-amd64-20190223-083106.iso create an Ubuntu virtual machine with the following
+2. Using the truemark-vmware-ubuntu-18.04.1-server-amd64-20190305-104144.iso create an Ubuntu virtual machine with the following
 specifications:
 
   * 2 vCPU
