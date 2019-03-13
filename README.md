@@ -44,8 +44,49 @@ specifications:
     
 3. Using the "Shared Folders" feature of VMware Fusion. Share the "salt-oracle" folder with your virtual machine from step 2.
 
-4. SSH to the Oracle Salt Master virtual machine you setup, execute the following as the root user
+4. SSH to the Oracle Salt Master virtual machine you setup and execute the following as the root user
 
     ```bash
     bash < <(curl -s https://raw.githubusercontent.com/truemark-saltstack-formulas/oracle-formula/master/localdev-master.sh)
     ```
+    
+    This will install the salt master, minion and provide some initial configuration. This script also mounts the
+    share you created in step 3 to /srv.
+
+5. Using the truemark-vmware-ol-7.6-server-amd64-20190223-083106.iso create an Oracle Linux virtual machine with the following
+specifications:
+
+  * 2 vCPU
+  * 2 GB RAM
+  * 30 GB Disk 1
+  * 50 GB Disk 2
+  * 50 GB Disk 3
+  
+  The ISO above will auto-install Oracle Linux.
+  
+  We recommend you name the VM "Oracle Salt Minion"
+  
+  Once installed you can log in with the following credentials
+  
+  * Username: user
+  * Password: truemark
+  
+  Optionally you can also use the Oracle Linux ISO from https://www.oracle.com/technetwork/server-storage/linux/downloads/index.html
+  and do a minimal install.
+  
+6. SSH to the Oracle Salt Minion virtual machine you setup and execute the following as the root user
+
+    ```bash
+    bash < <(curl -s https://raw.githubusercontent.com/truemark-saltstack-formulas/oracle-formula/master/localdev-minion.sh)
+    ```
+    
+    This script will prompt you for the IP address of your salt master and install and configure the salt minion for you.
+    
+    
+You should now have a fully working local development environment.
+You can verify your minions are up by running the following on your master.
+
+```bash
+salt-run manage.up
+salt '*' test.ping
+```

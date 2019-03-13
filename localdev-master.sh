@@ -33,15 +33,15 @@ curl -L https://bootstrap.saltstack.com -o install_salt.sh
 sh install_salt.sh -M stable
 rm -f install_salt.sh
 
-service salt-minion restart
-
-# Accept the key for the local minion
-output=$(salt-key -Ay --no-color)
-echo $output
-while [[ "${output}" == *"does not match"* ]]; do
-    output=$(salt-key -Ay --no-color)
-    echo $output
-done
+#service salt-minion restart
+#
+## Accept the key for the local minion
+#output=$(salt-key -Ay --no-color)
+#echo $output
+#while [[ "${output}" == *"does not match"* ]]; do
+#    output=$(salt-key -Ay --no-color)
+#    echo $output
+#done
 
 # Do some initial configuration for the salt master
 tee /etc/salt/master.d/ext_pillar.conf <<EOF
@@ -62,10 +62,14 @@ file_roots:
     - /srv/formulas/proservices-formula
 EOF
 
+tee /etc/salt/master.d/auto_accept.conf <<EOF
+auto_accept: True
+EOF
+
 tee /srv/salt/top.sls <<EOF
 base:
   '$(hostname -f)':
     - tmps
 EOF
 
-service salt-master restart
+service salt-master restart && service salt-minion restart
