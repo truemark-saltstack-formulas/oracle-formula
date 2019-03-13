@@ -16,3 +16,9 @@ cd /root
 curl -L https://bootstrap.saltstack.com -o install_salt.sh
 sh install_salt.sh stable
 rm -f install_salt.sh
+
+tee /etc/salt/minion.d/loglevel.conf <<EOF
+log_level: debug
+EOF
+
+service salt-minion restart
