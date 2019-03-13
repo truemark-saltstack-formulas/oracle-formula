@@ -63,7 +63,7 @@ file_roots:
 EOF
 
 tee /srv/salt/top.sls <<EOF
-'$(hostname -f)'
+'$(hostname -f)':
   - tmps.editor
 EOF
 
