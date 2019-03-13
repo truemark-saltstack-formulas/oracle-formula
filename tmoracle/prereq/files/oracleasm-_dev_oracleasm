@@ -9,7 +9,7 @@
 ORACLEASM_ENABLED=true
 
 # ORACLEASM_UID: Default UID owning the /dev/oracleasm mount point.
-ORACLEASM_UID={{ oracle }}
+ORACLEASM_UID={{ pillar.tmoracle.os.uid }}
 
 # ORACLEASM_GID: Default GID owning the /dev/oracleasm mount point.
 ORACLEASM_GID=oinstall
