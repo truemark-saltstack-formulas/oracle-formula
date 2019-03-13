@@ -6,6 +6,8 @@
 
 # Mount salt-oracle directory
 
+set -uex
+
 tee /etc/rc.local <<EOF
 #!/usr/bin/env bash
 vmhgfs-fuse .host:/\$(vmware-hgfsclient) /srv -o uid=0 -o gid=0 -o umask=0027
@@ -62,7 +64,7 @@ EOF
 
 tee /srv/salt/top.sls <<EOF
 '$(hostname -f)'
-  -
+  - tmps.editor
 EOF
 
 service salt-master restart
