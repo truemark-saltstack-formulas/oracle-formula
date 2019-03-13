@@ -63,8 +63,9 @@ file_roots:
 EOF
 
 tee /srv/salt/top.sls <<EOF
-'$(hostname -f)':
-  - tmps.editor
+base:
+  '$(hostname -f)':
+    - tmps.editor
 EOF
 
 service salt-master restart
