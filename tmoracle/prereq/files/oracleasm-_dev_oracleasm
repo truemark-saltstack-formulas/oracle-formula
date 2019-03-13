@@ -12,7 +12,7 @@ ORACLEASM_ENABLED=true
 ORACLEASM_UID={{ pillar.tmoracle.os.uid }}
 
 # ORACLEASM_GID: Default GID owning the /dev/oracleasm mount point.
-ORACLEASM_GID=oinstall
+ORACLEASM_GID={{ pillar.tmoracle.os.gid }}
 
 # ORACLEASM_SCANBOOT: 'true' means fix disk perms on boot
 ORACLEASM_SCANBOOT=true

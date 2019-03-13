@@ -1,0 +1,4 @@
+tmoracle:
+    os:
+        uid: oracle
+        gid: oinstall
