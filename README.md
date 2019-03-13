@@ -77,7 +77,7 @@ specifications:
 6. SSH to the Oracle Salt Minion virtual machine you setup and execute the following as the root user
 
     ```bash
-    bash < <(curl -s https://raw.githubusercontent.com/truemark-saltstack-formulas/oracle-formula/master/localdev-minion.sh)
+    SALT_MASTER="PUT IP ADDRESS HERE" bash < <(curl -s https://raw.githubusercontent.com/truemark-saltstack-formulas/oracle-formula/master/localdev-minion.sh)
     ```
     
     This script will prompt you for the IP address of your salt master and install and configure the salt minion for you.
