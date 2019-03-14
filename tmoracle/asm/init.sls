@@ -16,7 +16,7 @@ oracle-asm-init:
 
 oracle-asm-create-disk:
   cmd.run:
-    - name: 'oracleasm createdisk DATA1'
+    - name: 'oracleasm createdisk DATA1 /dev/sdc1'
     - unless: oracleasm querydisk DATA1
     - require:
         - oracle-asm-init
