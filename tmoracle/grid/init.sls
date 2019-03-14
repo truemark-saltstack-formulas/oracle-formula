@@ -23,7 +23,7 @@ grid-download-{{ file_name }}:
 
 grid-unpack-{{ file_name }}:
   cmd.run:
-    - name: unzip -o {{ file_name }} && touch {{ location }}/{{ file_name }}.unpacked
+    - name: su -c "unzip -o {{ file_name }}" oracle && touch {{ location }}/{{ file_name }}.unpacked
     - cwd: {{ location }}
     - unless: ls {{ location }}/{{ file_name }}.unpacked
     - require:
