@@ -1,4 +1,6 @@
 tmoracle:
+  # Put an ext4 filesystem on /dev/sdb and mount it to /u01
+  u01: /dev/sdb
   asm:
     diskgroups:
       DATA:
