@@ -2,11 +2,8 @@ tmoracle:
   # Put an ext4 filesystem on /dev/sdb and mount it to /u01
   u01: /dev/sdb
   asm:
-    diskgroups:
-      DATA:
-        - /dev/sdc
-      FRA:
-        - /dev/sdc
+    disks:
+      DATA1: /dev/sdc
   grid:
     home: /u01/app/12.2.0.1/grid
     version: 12.2.0.1
