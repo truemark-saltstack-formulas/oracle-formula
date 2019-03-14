@@ -13,3 +13,10 @@ oracle-asm-init:
     - unless: oracleasm status
     - require:
         - oracle-asm-update
+
+oracle-asm-create-disk:
+  cmd.run:
+    - name: 'oracleasm createdisk DATA1'
+    - unless: oracleasm querydisk DATA1
+    - require:
+        - oracle-asm-init
