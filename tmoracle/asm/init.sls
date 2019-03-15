@@ -19,7 +19,7 @@ oracle-asm-init:
 oracle-asm-partition-disk-{{ name }}:
   cmd.run:
     - name: parted -s {{ device }} mklabel gpt && parted -a optimal {{ device }} mkpart primary 0% 100%
-    - unless: oracleasm querydisk {{ name }} {{ device }}
+    - unless: oracleasm querydisk {{ name }}
     - require:
         - oracle-asm-init
 
