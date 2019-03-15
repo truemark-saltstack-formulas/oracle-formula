@@ -48,9 +48,24 @@ grid-delete-{{ file_name }}:
 
   {% endfor %}
 
-start-nscd:
+nscd:
   service.running:
-    - name: nscd
     - enable: True
+
+asmdba:
+  group.present:
+    - gid: 54327
+    - members:
+        - oracle
+
+asmoper:
+  group.present:
+    - gid: 54328
+
+asmadmin:
+  group.present:
+    - gid: 54329
+    - members:
+      - oracle
 
 {% endif %}
