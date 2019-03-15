@@ -4,3 +4,4 @@ include:
   - tmoracle.prereq
   - tmoracle.grid
   - tmoracle.asm
+  - tmoracle.software
