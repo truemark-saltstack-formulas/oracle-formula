@@ -16,7 +16,7 @@
 
 grid-download-{{ file_name }}:
   cmd.run:
-    - name: curl {{ file_url }} --output {{ location }}/{{ file_name }}
+    - name: curl -C - {{ file_url }} --output {{ location }}/{{ file_name }}
     - unless: ls {{ location }}/{{ file_name }}.unpacked
     - require:
         - grid-location
@@ -47,5 +47,10 @@ grid-delete-{{ file_name }}:
         - {{ package_name }}: {{ location }}/{{ package_location }}
 
   {% endfor %}
+
+start-nscd:
+  service.running:
+    - name: nscd
+    - enable: True
 
 {% endif %}

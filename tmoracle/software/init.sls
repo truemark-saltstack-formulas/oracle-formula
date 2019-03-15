@@ -25,7 +25,7 @@ software-location-{{ download }}:
 
 software-download-{{ file_name }}:
   cmd.run:
-    - name: curl {{ file_url }} --output {{ location }}/{{ download }}/{{ file_name }}
+    - name: curl -C - {{ file_url }} --output {{ location }}/{{ download }}/{{ file_name }}
     - unless: ls {{ location }}/{{ download }}/{{ file_name }}.unpacked
     - require:
         - software-location
