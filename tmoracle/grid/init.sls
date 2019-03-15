@@ -1,10 +1,10 @@
 {% if pillar['tmoracle']['grid'] is defined %}
 
-{% set location = salt['pillar.get']('tmoracle:grid:location') %}
+{% set home = salt['pillar.get']('tmoracle:grid:home') %}
 
-'grid-location':
+'grid-home':
   file.directory:
-    - name: {{ location }}
+    - name: {{ home }}
     - makedirs: True
     - user: oracle
     - group: oinstall
@@ -16,35 +16,35 @@
 
 grid-download-{{ file_name }}:
   cmd.run:
-    - name: curl -C - {{ file_url }} --output {{ location }}/{{ file_name }}
-    - unless: ls {{ location }}/{{ file_name }}.unpacked
+    - name: curl -C - {{ file_url }} --output {{ home }}/{{ file_name }}
+    - unless: ls {{ home }}/{{ file_name }}.unpacked
     - require:
-        - grid-location
+        - grid-home
 
 grid-unpack-{{ file_name }}:
   cmd.run:
-    - name: su -c "unzip -o {{ file_name }}" oracle && touch {{ location }}/{{ file_name }}.unpacked
-    - cwd: {{ location }}
-    - unless: ls {{ location }}/{{ file_name }}.unpacked
+    - name: su -c "unzip -o {{ file_name }}" oracle && touch {{ home }}/{{ file_name }}.unpacked
+    - cwd: {{ home }}
+    - unless: ls {{ home }}/{{ file_name }}.unpacked
     - require:
         - grid-download-{{ file_name }}
 
 grid-delete-{{ file_name }}:
   cmd.run:
-    - name: rm {{ location }}/{{ file_name }}
-    - cwd: {{ location }}
-    - onlyif: ls {{ location }}/{{ file_name }}
+    - name: rm {{ home }}/{{ file_name }}
+    - cwd: {{ home }}
+    - onlyif: ls {{ home }}/{{ file_name }}
     - require:
         - grid-unpack-{{ file_name }}
 
   {% endfor %}
 
-  {% for package_name, package_location in salt['pillar.get']('tmoracle:grid:packages', {}).items() %}
+  {% for package_name, package_home in salt['pillar.get']('tmoracle:grid:packages', {}).items() %}
 
 'grid-rpm-{{package_name}}':
   pkg.installed:
     - sources:
-        - {{ package_name }}: {{ location }}/{{ package_location }}
+        - {{ package_name }}: {{ home }}/{{ package_home }}
 
   {% endfor %}
 
@@ -67,5 +67,22 @@ asmadmin:
     - gid: 54329
     - members:
       - oracle
+
+'/home/oracle/.bashrc.grid':
+  file.managed:
+    - source: salt://tmoracle/grid/files/bashrc.grid.jinja
+    - user: oracle
+    - group: oinstall
+    - mode: 664
+    - template: jinja
+
+{{ pillar.tmoracle.oracle_inventory }}:
+  file.directory:
+    - makedirs: True
+    - user: oracle
+    - group: oinstall
+    - mode: 755
+
+# TODO Add alias and echo to .bashrc
 
 {% endif %}

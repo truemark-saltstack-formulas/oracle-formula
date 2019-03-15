@@ -24,6 +24,7 @@ GUI:
         - xfconf
         - xfdesktop
         - xfwm4
+        - xfce4-terminal
 # VNC
         - tigervnc-server
 
