@@ -6,3 +6,4 @@ oracle-prereqs:
       - gcc
       - gcc-c++
       - nscd
+      - bc
