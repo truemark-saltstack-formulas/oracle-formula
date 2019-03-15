@@ -39,4 +39,13 @@ grid-delete-{{ file_name }}:
 
   {% endfor %}
 
+  {% for package_name, package_location in salt['pillar.get']('tmoracle:grid:packages', {}).items() %}
+
+'grid-rpm-{{package_name}}':
+  pkg.installed:
+    - sources:
+        - {{ package_name }}: {{ location }}/{{ package_location }}
+
+  {% endfor %}
+
 {% endif %}
