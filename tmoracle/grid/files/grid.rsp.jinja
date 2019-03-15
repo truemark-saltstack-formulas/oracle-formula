@@ -57,7 +57,7 @@ oracle.install.responseFileVersion=/oracle/install/rspfmt_crsinstall_response_sc
 # This is an optional parameter if installing on  
 # Windows based Operating System.
 #-------------------------------------------------------------------------------
-INVENTORY_LOCATION=/u01/app/oraInventory
+INVENTORY_LOCATION={{ pillar.tmoracle.oracle_inventory }}
 
 #-------------------------------------------------------------------------------
 # Specify the installation option.
@@ -76,7 +76,7 @@ oracle.install.option=HA_CONFIG
 #-------------------------------------------------------------------------------
 # Specify the complete path of the Oracle Base.
 #-------------------------------------------------------------------------------
-ORACLE_BASE=/u01/app/12.2.0.1
+ORACLE_BASE={{ pillar.tmoracle.oracle_base }}
 
 ################################################################################
 #                                                                              #
@@ -92,7 +92,7 @@ ORACLE_BASE=/u01/app/12.2.0.1
 #-------------------------------------------------------------------------------
 # The OSDBA_GROUP is the OS group which is to be granted SYSDBA privileges.
 #-------------------------------------------------------------------------------
-oracle.install.asm.OSDBA=oinstall
+oracle.install.asm.OSDBA={{ pillar.tmoracle.oracle_group }}
 
 #-------------------------------------------------------------------------------
 # The OSOPER_GROUP is the OS group which is to be granted SYSOPER privileges.
@@ -105,7 +105,7 @@ oracle.install.asm.OSOPER=
 # The OSASM_GROUP is the OS group which is to be granted SYSASM privileges. This
 # must be different than the previous two.
 #-------------------------------------------------------------------------------
-oracle.install.asm.OSASM=oinstall
+oracle.install.asm.OSASM={{ pillar.tmoracle.oracle_group }}
 
 ################################################################################
 #                                                                              #
@@ -346,7 +346,7 @@ oracle.install.asm.SYSASMPassword=
 # Example: oracle.install.asm.diskGroup.name=data
 #
 #-------------------------------------------------------------------------------
-oracle.install.asm.diskGroup.name=DATA
+oracle.install.asm.diskGroup.name={{ pillar.tmoracle.oracle_diskgroup }}
 
 #-------------------------------------------------------------------------------
 # Redundancy level to be used by ASM.
@@ -393,7 +393,7 @@ oracle.install.asm.diskGroup.FailureGroups=
 #     oracle.install.asm.diskGroup.disksWithFailureGroupNames=\\.\ORCLDISKDATA0,FGName,\\.\ORCLDISKDATA1,FGName
 #
 #-------------------------------------------------------------------------------
-oracle.install.asm.diskGroup.disksWithFailureGroupNames=/dev/oracleasm/disks/DATA1,
+oracle.install.asm.diskGroup.disksWithFailureGroupNames=/dev/oracleasm/disks/{{ pillar.tmoracle.oracle_disk }},
 
 #-------------------------------------------------------------------------------
 # List of disks to create a ASM DiskGroup
@@ -405,7 +405,7 @@ oracle.install.asm.diskGroup.disksWithFailureGroupNames=/dev/oracleasm/disks/DAT
 #     oracle.install.asm.diskGroup.disks=\\.\ORCLDISKDATA0,\\.\ORCLDISKDATA1
 #
 #-------------------------------------------------------------------------------
-oracle.install.asm.diskGroup.disks=/dev/oracleasm/disks/DATA1
+oracle.install.asm.diskGroup.disks=/dev/oracleasm/disks/{{ pillar.tmoracle.oracle_disk }}
 
 #-------------------------------------------------------------------------------
 # List of failure groups to be marked as QUORUM.
@@ -582,7 +582,7 @@ oracle.install.config.emAdminPassword=
 #
 # If this option is selected, password should be specified on the console.
 #-------------------------------------------------------------------------------------------------------
-oracle.install.crs.rootconfig.executeRootScript=false
+oracle.install.crs.rootconfig.executeRootScript=true
 
 #--------------------------------------------------------------------------------------
 # Specify the configuration method to be used for automatic root script execution.
