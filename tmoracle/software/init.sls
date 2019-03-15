@@ -1,6 +1,6 @@
 {% if pillar['tmoracle']['software'] is defined %}
 
-  {% set location = salt['pillar.get']('tmoracle:software:location') %}
+  {% set location = salt['pillar.get']('tmoracle:download_location') %}
 
 software-location:
   file.directory:

@@ -1,0 +1,8 @@
+export ORACLE_BASE="{{ pillar.tmoracle.oracle_base }}"
+export ORACLE_HOME="{{ pillar.tmoracle.grid.home }}"
+export ORACLE_SID="+ASM"
+export LD_LIBRARY_PATH=$ORACLE_HOME/lib/
+export CRS_HOME=$ORACLE_HOME
+export NLS_DATE_FORMAT='DD-MON-RRRR HH24:MI:SS'
+export PATH=$AGENT_HOME/bin:$ORACLE_HOME/bin:$ORACLE_HOME/OPatch:${PATH}
+export PS1="\u@\h($ORACLE_SID) \w> "
