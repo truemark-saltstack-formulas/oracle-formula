@@ -12,6 +12,13 @@
     - group: oinstall
     - mode: 0755
 
+'{{ download_location }}/runInstallerWrapper.sh':
+  file.managed:
+    - source: salt://tmoracle/homes/files/runInstallerWrapper.sh
+    - user: oracle
+    - group: oinstall
+    - mode: 0740
+
 {% for home in salt['pillar.get']('tmoracle:homes') %}
 
 {% set software = salt['pillar.get']('tmoracle:homes:' + home + ':software') %}
@@ -46,18 +53,29 @@
         oracle_edition: {{ oracle_edition }}
     - require:
       - '{{ oracle_home }}'
+      - '{{ download_location }}/runInstallerWrapper.sh'
 
-'install-{{ oracle_home }}':
+'{{ oracle_home }}-install':
   cmd.run:
-    - name: {{ software_location }}/database/runInstaller -silent -responseFile {{ oracle_home }}.rsp
+    #- name: {{ software_location }}/database/runInstaller -waitForCompletion -silent -responseFile {{ oracle_home }}.rsp
+    - name: {{ download_location }}/runInstallerWrapper.sh {{ software_location }}/database/runInstaller {{ oracle_home }}.rsp
     - runas: oracle
+    # TODO There is likely a better way to do this with some custom grain data
+    - unless:
+      - ls {{ oracle_home }}/bin/sqlplus
     - require:
       - '{{ oracle_home }}.rsp'
 
-#'{{ pillar.tmoracle.oracle_base }}/{{ home }}':
+'{{ oracle_home }}-orainstRoot.sh':
+  cmd.run:
+    - name: {{ oracle_inventory }}/orainstRoot.sh
+    - require:
+      -  '{{ oracle_home }}-install'
 
-  {%- do salt.log.debug('MOO') -%}
-  {%- do salt.log.debug(software_location) -%}
-
+'{{ oracle_home }}-root.sh':
+  cmd.run:
+    - name: {{ oracle_home }}/root.sh
+    - require:
+      - '{{ oracle_home }}-install'
 
 {% endfor %}
