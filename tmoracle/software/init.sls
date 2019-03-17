@@ -8,9 +8,9 @@ software-location:
     - makedirs: True
     - user: oracle
     - group: oinstall
-    - mode: 755
+    - mode: 0755
 
-  {% for download in salt['pillar.get']('tmoracle:software:downloads') %}
+  {% for download in salt['pillar.get']('tmoracle:software') %}
 
 software-location-{{ download }}:
   file.directory:

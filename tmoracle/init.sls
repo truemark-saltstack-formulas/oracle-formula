@@ -5,3 +5,4 @@ include:
   - tmoracle.grid
   - tmoracle.asm
   - tmoracle.software
+  - tmoracle.homes

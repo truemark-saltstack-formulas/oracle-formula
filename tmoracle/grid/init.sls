@@ -73,7 +73,7 @@ asmadmin:
     - source: salt://tmoracle/grid/files/bashrc.grid.jinja
     - user: oracle
     - group: oinstall
-    - mode: 664
+    - mode: 0664
     - template: jinja
 
 {{ pillar.tmoracle.oracle_inventory }}:

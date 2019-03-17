@@ -7,3 +7,6 @@ oracle-prereqs:
       - gcc-c++
       - nscd
       - bc
+      - ksh
+      - mksh
+      - elfutils-libelf-devel
