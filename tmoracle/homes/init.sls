@@ -69,13 +69,13 @@
 '{{ oracle_home }}-orainstRoot.sh':
   cmd.run:
     - name: {{ oracle_inventory }}/orainstRoot.sh
-    - require:
+    - onlyif:
       -  '{{ oracle_home }}-install'
 
 '{{ oracle_home }}-root.sh':
   cmd.run:
     - name: {{ oracle_home }}/root.sh
-    - require:
+    - onlyif:
       - '{{ oracle_home }}-install'
 
 {% endfor %}
