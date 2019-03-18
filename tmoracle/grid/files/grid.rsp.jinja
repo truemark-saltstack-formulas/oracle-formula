@@ -92,20 +92,20 @@ ORACLE_BASE={{ oracle_base }}
 #-------------------------------------------------------------------------------
 # The OSDBA_GROUP is the OS group which is to be granted SYSDBA privileges.
 #-------------------------------------------------------------------------------
-oracle.install.asm.OSDBA=dba
+oracle.install.asm.OSDBA=asmdba
 
 #-------------------------------------------------------------------------------
 # The OSOPER_GROUP is the OS group which is to be granted SYSOPER privileges.
 # The value to be specified for OSOPER group is optional.
 # Value should not be provided if configuring Client Cluster - i.e. storageOption=CLIENT_ASM_STORAGE.
 #-------------------------------------------------------------------------------
-oracle.install.asm.OSOPER=oper
+oracle.install.asm.OSOPER=asmoper
 
 #-------------------------------------------------------------------------------
 # The OSASM_GROUP is the OS group which is to be granted SYSASM privileges. This
 # must be different than the previous two.
 #-------------------------------------------------------------------------------
-oracle.install.asm.OSASM=asmdba
+oracle.install.asm.OSASM=asmadmin
 
 ################################################################################
 #                                                                              #
@@ -338,7 +338,7 @@ oracle.install.asmOnNAS.gimrLocation=
 #-------------------------------------------------------------------------------
 # Password for SYS user of Oracle ASM
 #-------------------------------------------------------------------------------
-oracle.install.asm.SYSASMPassword=
+oracle.install.asm.SYSASMPassword={{ sys_password }}
 
 #-------------------------------------------------------------------------------
 # The ASM DiskGroup
@@ -430,7 +430,7 @@ oracle.install.asm.diskGroup.diskDiscoveryString=/dev/oracleasm/disks/*
 # Password for ASMSNMP account
 # ASMSNMP account is used by Oracle Enterprise Manager to monitor Oracle ASM instances
 #-------------------------------------------------------------------------------
-oracle.install.asm.monitorPassword=
+oracle.install.asm.monitorPassword={{ asmsnmp_password }}
 
 #-------------------------------------------------------------------------------
 # GIMR Storage data ASM DiskGroup
@@ -582,7 +582,7 @@ oracle.install.config.emAdminPassword=
 #
 # If this option is selected, password should be specified on the console.
 #-------------------------------------------------------------------------------------------------------
-oracle.install.crs.rootconfig.executeRootScript=true
+oracle.install.crs.rootconfig.executeRootScript=false
 
 #--------------------------------------------------------------------------------------
 # Specify the configuration method to be used for automatic root script execution.
