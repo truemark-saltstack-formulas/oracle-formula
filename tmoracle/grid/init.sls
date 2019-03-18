@@ -2,8 +2,9 @@
 
 {% set oracle_inventory = salt['pillar.get']('tmoracle:oracle_inventory') %}
 {% set oracle_base = salt['pillar.get']('tmoracle:oracle_base') %}
-
-{% set home = salt['pillar.get']('tmoracle:grid:home') %}
+{% set sys_password = salt['pillar.get']('tmoracle:grid:sys_password') %}
+{% set asmsnmp_password = salt['pillar.get']('tmoracle:grid:asmsnmp_password') %}
+{% set home = oracle_base + '/' + salt['pillar.get']('tmoracle:grid:home') %}
 
 'grid-home':
   file.directory:
@@ -106,5 +107,22 @@ asmadmin:
       oracle_base: {{ oracle_base }}
       oracle_diskgroup: DATA
       oracle_disk: DATA1
+      sys_password: {{ sys_password }}
+      asmsnmp_password: {{ asmsnmp_password }}
+
+Run Grid Setup:
+  cmd.run:
+    - name: su - oracle -c "cd {{ home }}; ./gridSetup.sh -waitForCompletion -silent -responseFile {{ home }}.rsp" && touch {{ home }}.rsp.ran
+    - cwd: {{ home }}
+    - unless: ls {{ home }}.rsp.ran
+    - require:
+        - {{ home }}.rsp
+
+Run Post Grid Setup:
+  cmd.run:
+    - name: /u01/app/12.2.0.1/grid/root.sh
+    - cwd: {{ home }}
+    - onchanges:
+        - Run Grid Setup
 
 {% endif %}
