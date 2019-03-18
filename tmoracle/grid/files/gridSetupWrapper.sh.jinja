@@ -21,10 +21,12 @@ DIR=$(pwd)
 su - oracle -c "cd ${DIR}; ./gridSetup.sh -waitForCompletion -silent -responseFile ${RESPONSE_FILE}; exit $?"
 
 RETCODE="$?"
+echo "Return code is ${RETCODE}"
+exit ${RETCODE}
 
-if [ "${RETCODE}" == 1 ]; then
-  exit 1
-else
-  exit 0
-fi
+#if [ "${RETCODE}" == 1 ]; then
+#  exit 1
+#else
+#  exit 0
+#fi
 
