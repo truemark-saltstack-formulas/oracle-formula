@@ -82,6 +82,9 @@ asmadmin:
     - group: oinstall
     - mode: 0664
     - template: jinja
+    - context:
+      home: {{ home }}
+      oracle_base: {{ oracle_base }}
 
 '/home/oracle/.bashrc.d/grid.bashrc':
   file.managed:
