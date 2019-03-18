@@ -68,6 +68,8 @@ asmdba:
 asmoper:
   group.present:
     - gid: 54328
+    - members:
+        - oracle
 
 asmadmin:
   group.present:
@@ -136,7 +138,14 @@ Run Grid Setup:
         - '{{ home }}/gridSetupWrapper.sh'
         - '{{ home }}.rsp'
 
-Run Post Grid Setup:
+'orainstRoot.sh':
+  cmd.run:
+    - name: {{ oracle_inventory }}/orainstRoot.sh
+    - onchanges:
+      - Run Grid Setup
+
+
+'root.sh':
   cmd.run:
     - name: {{ home }}/root.sh
     - cwd: {{ home }}
@@ -151,7 +160,7 @@ Run Post Grid Setup:
     - group: oinstall
     - mode: 0750
 
-'{{ home }}/bin/crsstat_fill':
+'{{ home }}/bin/crsstat_full':
   file.managed:
     - source: salt://tmoracle/grid/files/crsstat_full
     - user: oracle
