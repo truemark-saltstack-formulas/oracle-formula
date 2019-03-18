@@ -26,15 +26,24 @@ Update Salt Minion NOPROC Limit:
     - before: ExecStart
     - content: LimitNPROC=16384
 
+Update Salt Minion STACK Limit:
+  file.line:
+    - name: /usr/lib/systemd/system/salt-minion.service
+    - mode: ensure
+    - after: LimitNPROC
+    - before: ExecStart
+    - content: LimitSTACK=10240K
+
 'systemctl daemon-reload':
   cmd.run:
-    - onlyif:
-      - Update Salt Minion NOFILE Limit
-      - Update Salt Minion NOPROC Limit
+    - onchanges_any:
+        - Update Salt Minion NOFILE Limit
+        - Update Salt Minion NOPROC Limit
+        - Update Salt Minion STACK Limit
 
 Restart Salt Minion:
   cmd.run:
     - name: 'salt-call service.restart salt-minion'
     - bg: True
-    - onlyif:
+    - onchanges:
       - systemctl daemon-reload
