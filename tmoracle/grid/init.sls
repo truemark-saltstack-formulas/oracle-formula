@@ -138,7 +138,7 @@ Run Grid Setup:
 
 Run Post Grid Setup:
   cmd.run:
-    - name: /u01/app/12.2.0.1/grid/root.sh
+    - name: {{ home }}/root.sh
     - cwd: {{ home }}
     - onchanges:
         - Run Grid Setup
