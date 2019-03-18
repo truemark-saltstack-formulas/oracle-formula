@@ -1,6 +1,6 @@
 {% if pillar['tmoracle']['software'] is defined %}
 
-  {% set location = salt['pillar.get']('tmoracle:download_location') %}
+{% set location = salt['pillar.get']('tmoracle:download_location') %}
 
 software-location:
   file.directory:
@@ -10,7 +10,7 @@ software-location:
     - group: oinstall
     - mode: 0755
 
-  {% for download in salt['pillar.get']('tmoracle:software') %}
+{% for download in salt['pillar.get']('tmoracle:software') %}
 
 software-location-{{ download }}:
   file.directory:
@@ -20,7 +20,7 @@ software-location-{{ download }}:
     - group: oinstall
     - mode: 0755
 
-    {% for file_name, file_url in salt['pillar.get']('tmoracle:software:downloads:' + download + ':files', {}).items() %}
+{% for file_name, file_url in salt['pillar.get']('tmoracle:software:' + download + ':files', {}).items() %}
 
 
 software-download-{{ file_name }}:
@@ -46,8 +46,8 @@ software-delete-{{ file_name }}:
     - require:
         - software-unpack-{{ file_name }}
 
-    {% endfor %}
+{% endfor %}
 
-  {% endfor %}
+{% endfor %}
 
 {% endif %}
