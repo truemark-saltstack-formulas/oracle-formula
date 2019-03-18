@@ -122,36 +122,24 @@ asmadmin:
 '{{ home }}/gridSetupWrapper.sh':
   file.managed:
     - source: salt://tmoracle/grid/files/gridSetupWrapper.sh.jinja
-    - user: oracle
-    - group: oinstall
-    - mode: 0750
+    - user: root
+    - group: root
+    - mode: 0700
     - template: jinja
     - require:
       - '{{ home }}.rsp'
 
 Run Grid Setup:
   cmd.run:
-    - name: ./gridSetupWrapper.sh {{ home }}.rsp && touch {{ home }}.rsp.ran
+    - name: ./gridSetupWrapper.sh
     - cwd: {{ home }}
-    - unless: ls {{ home }}.rsp.ran
+    - unless: ls {{ home }}/bin/crsctl
     - require:
-        - '{{ home }}/gridSetupWrapper.sh'
-        - '{{ home }}.rsp'
-
-'orainstRoot.sh':
-  cmd.run:
-    - name: {{ oracle_inventory }}/orainstRoot.sh
-    - onchanges:
-      - Run Grid Setup
-
-
-'root.sh':
-  cmd.run:
-    - name: {{ home }}/root.sh
-    - cwd: {{ home }}
-    - onchanges:
-        - Run Grid Setup
-
+      - '{{ home }}/gridSetupWrapper.sh'
+      - '{{ home }}.rsp'
+    - context:
+      oracle_inventory: {{ oracle_inventory }}
+      response_file: {{ home }}.rsp
 
 '{{ home }}/bin/crsstat':
   file.managed:
