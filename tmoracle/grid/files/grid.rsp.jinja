@@ -57,7 +57,7 @@ oracle.install.responseFileVersion=/oracle/install/rspfmt_crsinstall_response_sc
 # This is an optional parameter if installing on  
 # Windows based Operating System.
 #-------------------------------------------------------------------------------
-INVENTORY_LOCATION={{ pillar.tmoracle.oracle_inventory }}
+INVENTORY_LOCATION={{ oracle_inventory }}
 
 #-------------------------------------------------------------------------------
 # Specify the installation option.
@@ -76,7 +76,7 @@ oracle.install.option=HA_CONFIG
 #-------------------------------------------------------------------------------
 # Specify the complete path of the Oracle Base.
 #-------------------------------------------------------------------------------
-ORACLE_BASE={{ pillar.tmoracle.oracle_base }}
+ORACLE_BASE={{ oracle_base }}
 
 ################################################################################
 #                                                                              #
@@ -92,20 +92,20 @@ ORACLE_BASE={{ pillar.tmoracle.oracle_base }}
 #-------------------------------------------------------------------------------
 # The OSDBA_GROUP is the OS group which is to be granted SYSDBA privileges.
 #-------------------------------------------------------------------------------
-oracle.install.asm.OSDBA={{ pillar.tmoracle.oracle_group }}
+oracle.install.asm.OSDBA=dba
 
 #-------------------------------------------------------------------------------
 # The OSOPER_GROUP is the OS group which is to be granted SYSOPER privileges.
 # The value to be specified for OSOPER group is optional.
 # Value should not be provided if configuring Client Cluster - i.e. storageOption=CLIENT_ASM_STORAGE.
 #-------------------------------------------------------------------------------
-oracle.install.asm.OSOPER=
+oracle.install.asm.OSOPER=oper
 
 #-------------------------------------------------------------------------------
 # The OSASM_GROUP is the OS group which is to be granted SYSASM privileges. This
 # must be different than the previous two.
 #-------------------------------------------------------------------------------
-oracle.install.asm.OSASM={{ pillar.tmoracle.oracle_group }}
+oracle.install.asm.OSASM=asmdba
 
 ################################################################################
 #                                                                              #
@@ -346,7 +346,7 @@ oracle.install.asm.SYSASMPassword=
 # Example: oracle.install.asm.diskGroup.name=data
 #
 #-------------------------------------------------------------------------------
-oracle.install.asm.diskGroup.name={{ pillar.tmoracle.oracle_diskgroup }}
+oracle.install.asm.diskGroup.name={{ oracle_diskgroup }}
 
 #-------------------------------------------------------------------------------
 # Redundancy level to be used by ASM.
@@ -393,7 +393,7 @@ oracle.install.asm.diskGroup.FailureGroups=
 #     oracle.install.asm.diskGroup.disksWithFailureGroupNames=\\.\ORCLDISKDATA0,FGName,\\.\ORCLDISKDATA1,FGName
 #
 #-------------------------------------------------------------------------------
-oracle.install.asm.diskGroup.disksWithFailureGroupNames=/dev/oracleasm/disks/{{ pillar.tmoracle.oracle_disk }},
+oracle.install.asm.diskGroup.disksWithFailureGroupNames=/dev/oracleasm/disks/{{ oracle_disk }},
 
 #-------------------------------------------------------------------------------
 # List of disks to create a ASM DiskGroup
@@ -405,7 +405,7 @@ oracle.install.asm.diskGroup.disksWithFailureGroupNames=/dev/oracleasm/disks/{{ 
 #     oracle.install.asm.diskGroup.disks=\\.\ORCLDISKDATA0,\\.\ORCLDISKDATA1
 #
 #-------------------------------------------------------------------------------
-oracle.install.asm.diskGroup.disks=/dev/oracleasm/disks/{{ pillar.tmoracle.oracle_disk }}
+oracle.install.asm.diskGroup.disks=/dev/oracleasm/disks/{{ oracle_disk }}
 
 #-------------------------------------------------------------------------------
 # List of failure groups to be marked as QUORUM.

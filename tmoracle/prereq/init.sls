@@ -11,6 +11,26 @@ Install Oracle Prerequisites:
       - mksh
       - elfutils-libelf-devel
 
+Setup Oracle Bash:
+  file.blockreplace:
+    - name: /home/oracle/.bash_profile
+    - marker_start: '# SALT START DO NOT EDIT'
+    - marker_end: '# SALT END DO NOT EDIT'
+    - content: |
+        echo
+        echo "#############################################################"
+        for file in ~/.bashrc.d/*; do source "$file"; done
+        echo "#############################################################"
+        echo
+    - append_if_not_found: True
+    - backup: '.bak'
+
+'/home/oracle/.bashrc.d':
+  file.directory:
+    - user: oracle
+    - group: oinstall
+    - mode: 0755
+
 Update Salt Minion NOFILE Limit:
   file.line:
     - name: /usr/lib/systemd/system/salt-minion.service
