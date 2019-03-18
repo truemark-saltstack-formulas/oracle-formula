@@ -63,13 +63,13 @@ asmdba:
   group.present:
     - gid: 54327
     - members:
-        - oracle
+      - oracle
 
 asmoper:
   group.present:
     - gid: 54328
     - members:
-        - oracle
+      - oracle
 
 asmadmin:
   group.present:
