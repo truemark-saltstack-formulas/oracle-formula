@@ -100,23 +100,33 @@ asmadmin:
     - source: salt://tmoracle/grid/files/grid.rsp.jinja
     - user: oracle
     - group: oinstall
-    - mode: 0644
+    - mode: 0640
     - template: jinja
     - context:
       oracle_inventory: {{ oracle_inventory }}
       oracle_base: {{ oracle_base }}
+      # TODO This should not be hard coded
       oracle_diskgroup: DATA
       oracle_disk: DATA1
       sys_password: {{ sys_password }}
       asmsnmp_password: {{ asmsnmp_password }}
 
+'{{ home }}/gridSetupWrapper.sh':
+  file.managed:
+    - source: salt://tmoracle/grid/files/gridSetupWrapper.sh.jinja
+    - user: oracle
+    - group: oinstall
+    - mode: 0750
+    - template: jinja
+
 Run Grid Setup:
   cmd.run:
-    - name: su - oracle -c "cd {{ home }}; ./gridSetup.sh -waitForCompletion -silent -responseFile {{ home }}.rsp" && touch {{ home }}.rsp.ran
+    - name: ./gridSetupWrapper.sh {{ home }}.rsp && touch {{ home }}.rsp.ran
     - cwd: {{ home }}
     - unless: ls {{ home }}.rsp.ran
     - require:
-        - {{ home }}.rsp
+        - '{{ home }}/gridSetupWrapper.sh'
+        - '{{ home }}.rsp'
 
 Run Post Grid Setup:
   cmd.run:
@@ -124,5 +134,20 @@ Run Post Grid Setup:
     - cwd: {{ home }}
     - onchanges:
         - Run Grid Setup
+
+
+'{{ home }}/bin/crsstat':
+  file.managed:
+    - source: salt://tmoracle/grid/files/crsstat
+    - user: oracle
+    - group: oinstall
+    - mode: 0750
+
+'{{ home }}/bin/crsstat_fill':
+  file.managed:
+    - source: salt://tmoracle/grid/files/crsstat_full
+    - user: oracle
+    - group: oinstall
+    - mode: 0750
 
 {% endif %}
