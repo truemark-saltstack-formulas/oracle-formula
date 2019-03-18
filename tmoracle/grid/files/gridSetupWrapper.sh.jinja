@@ -9,7 +9,7 @@ fi
 
 USER=$(whoami)
 
-if [[ "root" != "${USER}" ]; then
+if [[ "root" != "${USER}" ]]; then
   echo "Script must be run as the root user"
   exit 1
 fi

@@ -4,7 +4,7 @@
 {% set oracle_base = salt['pillar.get']('tmoracle:oracle_base') %}
 {% set sys_password = salt['pillar.get']('tmoracle:grid:sys_password') %}
 {% set asmsnmp_password = salt['pillar.get']('tmoracle:grid:asmsnmp_password') %}
-{% set home = oracle_base + '/' + salt['pillar.get']('tmoracle:grid:home') %}
+{% set home = oracle_base + '/product/' + salt['pillar.get']('tmoracle:grid:home') %}
 
 'grid-home':
   file.directory:
@@ -23,7 +23,7 @@ grid-download-{{ file_name }}:
     - name: curl -C - {{ file_url }} --output {{ home }}/{{ file_name }}
     - unless: ls {{ home }}/{{ file_name }}.unpacked
     - require:
-        - grid-home
+      - grid-home
 
 grid-unpack-{{ file_name }}:
   cmd.run:
@@ -31,7 +31,7 @@ grid-unpack-{{ file_name }}:
     - cwd: {{ home }}
     - unless: ls {{ home }}/{{ file_name }}.unpacked
     - require:
-        - grid-download-{{ file_name }}
+      - 'grid-download-{{ file_name }}'
 
 grid-delete-{{ file_name }}:
   cmd.run:
@@ -39,7 +39,7 @@ grid-delete-{{ file_name }}:
     - cwd: {{ home }}
     - onlyif: ls {{ home }}/{{ file_name }}
     - require:
-        - grid-unpack-{{ file_name }}
+      - 'grid-unpack-{{ file_name }}'
 
 {% endfor %}
 
@@ -48,7 +48,10 @@ grid-delete-{{ file_name }}:
 'grid-rpm-{{package_name}}':
   pkg.installed:
     - sources:
-        - {{ package_name }}: {{ home }}/{{ package_home }}
+      - {{ package_name }}: {{ home }}/{{ package_home }}
+    - onlyif:
+      - ls {{ package_name }}: {{ home }}/{{ package_home }}
+
 
 {% endfor %}
 
@@ -118,6 +121,8 @@ asmadmin:
     - group: oinstall
     - mode: 0750
     - template: jinja
+    - require:
+      - '{{ home }}.rsp'
 
 Run Grid Setup:
   cmd.run:
