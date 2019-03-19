@@ -66,7 +66,7 @@
     - require:
       - '{{ oracle_home }}.rsp'
 
-'{{ oracle_inventory }}-orainstRoot.sh':
+'{{ oracle_home }}-orainstRoot.sh':
   cmd.run:
     - name: {{ oracle_inventory }}/orainstRoot.sh
     - onlyif:
