@@ -128,6 +128,9 @@ asmadmin:
     - template: jinja
     - require:
       - '{{ home }}.rsp'
+    - context:
+        oracle_inventory: {{ oracle_inventory }}
+        response_file: {{ home }}.rsp
 
 Run Grid Setup:
   cmd.run:
@@ -137,9 +140,6 @@ Run Grid Setup:
     - require:
       - '{{ home }}/gridSetupWrapper.sh'
       - '{{ home }}.rsp'
-    - context:
-      oracle_inventory: {{ oracle_inventory }}
-      response_file: {{ home }}.rsp
 
 '{{ home }}/bin/crsstat':
   file.managed:
