@@ -101,7 +101,7 @@ asmadmin:
     - makedirs: True
     - user: oracle
     - group: oinstall
-    - mode: 0755
+    - mode: 0770
 
 '{{ home }}.rsp':
   file.managed:
