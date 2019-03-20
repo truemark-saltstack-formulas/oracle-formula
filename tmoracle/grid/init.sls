@@ -2,9 +2,11 @@
 
 {% set oracle_inventory = salt['pillar.get']('tmoracle:oracle_inventory') %}
 {% set oracle_base = salt['pillar.get']('tmoracle:oracle_base') %}
+{% set download_location = salt['pillar.get']('tmoracle:download_location') %}
 {% set sys_password = salt['pillar.get']('tmoracle:grid:sys_password') %}
 {% set asmsnmp_password = salt['pillar.get']('tmoracle:grid:asmsnmp_password') %}
 {% set home = oracle_base + '/product/' + salt['pillar.get']('tmoracle:grid:home') %}
+{% set files = salt['pillar.get']('tmoracle:grid:files', {}) %}
 
 'grid-home':
   file.directory:
@@ -14,50 +16,134 @@
     - group: oinstall
     - mode: 755
 
-{% for file_name, file_url in salt['pillar.get']('tmoracle:grid:files', {}).items() %}
+'oracle-inventory':
+  file.directory:
+    - name: {{ oracle_inventory }}
+    - makedirs: True
+    - user: oracle
+    - group: oinstall
+    - mode: 0770
 
-{%- do salt.log.debug(file_name) -%}
+##########
+# Software
+##########
 
+# Download Software Files
+{% for file_name, file_url in files.items() %}
 grid-download-{{ file_name }}:
   cmd.run:
-    - name: curl -C - {{ file_url }} --output {{ home }}/{{ file_name }}
-    - unless: ls {{ home }}/{{ file_name }}.unpacked
+    - name: curl -s -f -C - {{ file_url }} --output {{ home }}/{{ file_name }}
+    - unless: ls {{ home }}/gridSetup.sh
     - require:
       - grid-home
+{% endfor %}
 
+# Unpack & Delete Software Files
+{% for file_name, file_url in files.items() %}
 grid-unpack-{{ file_name }}:
   cmd.run:
-    - name: su -c "unzip -o {{ file_name }}" oracle && touch {{ home }}/{{ file_name }}.unpacked
-    - cwd: {{ home }}
-    - unless: ls {{ home }}/{{ file_name }}.unpacked
-    - require:
-      - 'grid-download-{{ file_name }}'
-
-grid-delete-{{ file_name }}:
-  cmd.run:
-    - name: rm {{ home }}/{{ file_name }}
+    - name: su -c "unzip -qq -o {{ file_name }}" oracle
     - cwd: {{ home }}
     - onlyif: ls {{ home }}/{{ file_name }}
     - require:
-      - 'grid-unpack-{{ file_name }}'
-
+      - grid-download-{{ file_name }}
+grid-delete-{{ file_name }}:
+  cmd.run:
+    - name: rm -f {{ home }}/{{ file_name }}
+    - onlyif: ls {{ home }}/{{ file_name }}
+    - require:
+      - grid-unpack-{{ file_name }}
 {% endfor %}
 
-{% for package_name, package_home in salt['pillar.get']('tmoracle:grid:packages', {}).items() %}
+################################
+# Cumulative Patch Updates (CPU)
+################################
+{% if pillar['tmoracle']['grid']['cpu'] is defined %}
 
+{% set cpu_id = salt['pillar.get']('tmoracle:grid:cpu:id') %}
+{% set cpu_files = salt['pillar.get']('tmoracle:grid:cpu:files', {}) %}
+
+'grid-download-location-patches':
+  file.directory:
+    - name: {{ download_location }}/grid/patches
+    - makedirs: True
+    - user: oracle
+    - group: oinstall
+    - mode: 0755
+
+# Download Patch Files
+{% for cpu_file_name, cpu_url in cpu_files.items() %}
+grid-cpu-download-{{ cpu_file_name }}:
+  cmd.run:
+    - name: curl -s -f {{ cpu_url }} --output {{ download_location }}/grid/patches/{{ cpu_file_name }}
+    - unless: ls {{ download_location }}/grid/patches/{{ cpu_id }}
+    - require:
+      - grid-download-location-patches
+{% endfor %}
+
+# Unpack & Delete Patch Files
+{% for cpu_file_name, cpu_url in cpu_files.items() %}
+grid-cpu-unpack-{{ cpu_file_name }}:
+  cmd.run:
+    - name: su -c "unzip -qq -o {{ cpu_file_name }}" oracle
+    - cwd: '{{ download_location }}/grid/patches'
+    - onlyif: ls {{ download_location }}/grid/patches/{{ cpu_file_name }}
+    - require:
+      - grid-cpu-download-{{ cpu_file_name }}
+
+grid-cpu-delete-{{ cpu_file_name }}:
+  cmd.run:
+    - name: rm -f {{ download_location }}/grid/patches/{{ cpu_file_name }}
+    - onlyif: ls {{ download_location }}/grid/patches/{{ cpu_file_name }}
+    - require:
+      - grid-cpu-unpack-{{ cpu_file_name }}
+{% endfor %}
+
+{% endif %}
+
+########
+# OPatch
+########
+{% if pillar['tmoracle']['grid']['opatch'] is defined %}
+
+{% set opatch_file_name = salt['pillar.get']('tmoracle:grid:opatch:file_name') %}
+{% set opatch_url = salt['pillar.get']('tmoracle:grid:opatch:url') %}
+
+# Download OPatch Files
+grid-opatch-download-{{ opatch_file_name }}:
+  cmd.run:
+    - name: curl -s -f {{ opatch_url }} --output {{ download_location }}/grid/patches/{{ opatch_file_name }}
+    - unless: ls '{{ download_location }}/grid/patches/{{ opatch_file_name }}'
+    - require:
+      - grid-download-location-patches
+
+{% endif %}
+
+##################
+# Install Packages
+##################
+
+{% for package_name, package_home in salt['pillar.get']('tmoracle:grid:packages', {}).items() %}
 'grid-rpm-{{package_name}}':
   pkg.installed:
     - sources:
       - {{ package_name }}: {{ home }}/{{ package_home }}
     - onlyif:
       - ls {{ package_name }}: {{ home }}/{{ package_home }}
-
-
 {% endfor %}
+
+#################
+# Enable Services
+#################
 
 nscd:
   service.running:
     - enable: True
+
+
+##############
+# Setup Groups
+##############
 
 asmdba:
   group.present:
@@ -76,6 +162,10 @@ asmadmin:
     - gid: 54329
     - members:
       - oracle
+
+############
+# Setup Bash
+############
 
 '/home/oracle/.bashrc.grid':
   file.managed:
@@ -96,12 +186,9 @@ asmadmin:
     - mode: 0644
     - template: jinja
 
-{{ pillar.tmoracle.oracle_inventory }}:
-  file.directory:
-    - makedirs: True
-    - user: oracle
-    - group: oinstall
-    - mode: 0770
+############
+# Grid Setup
+############
 
 '{{ home }}.rsp':
   file.managed:
