@@ -38,7 +38,10 @@
 # ********* ENV VARIABLES *********
 # MODIFY AS NEEDED ................
 # *********************************
-GRID_HOME=/u01/app/12.2.0.1/grid/
+
+DIR="$(dirname $0)"
+cd ${DIR}/..
+GRID_HOME=$(pwd)
 
 
 # *********** ENVIRONMENT VARIABLES ******************************************************

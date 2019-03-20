@@ -1,14 +1,7 @@
 #!/bin/ksh
-#
-# Sample 10g CRS resource status query script
-#
-# Description:
-#    - Returns formatted version of crs_stat -t, in tabular
-#      format, with the complete rsc names and filtering keywords
-#   - The argument, $RSC_KEY, is optional and if passed to the script, will
-#     limit the output to HA resources whose names match $RSC_KEY.
-# Requirements:
-#   - $GRID_HOME should be set in your environment 
+
+DIR="$(dirname $0)"
+cd ${DIR}
 
 RSC_KEY=$1
 AWK=/bin/awk    # if not available use /usr/bin/awk
@@ -19,7 +12,7 @@ $AWK \
           printf "%-35s %-10s %-18s\n", "-----------", "------", "-----";}'
 
 # Table body:
-$CRS_HOME/bin/crsctl stat resource -v | $AWK \
+./crsctl stat resource -v | $AWK \
  'BEGIN { FS="="; state = 0; }
   $1~/NAME/ {appname = $2; state=1};
   $1~/LAST_SERVER/ {state=1};
