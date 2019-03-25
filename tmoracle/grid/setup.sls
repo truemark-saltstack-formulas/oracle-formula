@@ -3,8 +3,6 @@
 {% set oracle_inventory = salt['pillar.get']('tmoracle:oracle_inventory') %}
 {% set oracle_base = salt['pillar.get']('tmoracle:oracle_base') %}
 {% set home = oracle_base + '/product/' + salt['pillar.get']('tmoracle:grid:home') %}
-{%- do salt.log.debug(home) -%}
-{%- do salt.log.debug('MOOOOOO') -%}
 {% set sys_password = salt['pillar.get']('tmoracle:grid:sys_password') %}
 {% set asmsnmp_password = salt['pillar.get']('tmoracle:grid:asmsnmp_password') %}
 {% set initial_asm_diskgroup = salt['pillar.get']('tmoracle:grid:initial_asm_diskgroup') %}
