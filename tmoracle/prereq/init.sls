@@ -1,4 +1,5 @@
 {% set oracle_inventory = salt['pillar.get']('tmoracle:oracle_inventory') %}
+{% set oracle_base = salt['pillar.get']('tmoracle:oracle_base') %}
 
 '{{ oracle_inventory }}':
   file.directory:
@@ -6,6 +7,14 @@
     - user: oracle
     - group: oinstall
     - mode: 0770
+
+# Create the oracle base directories
+'{{ oracle_base }}':
+  file.directory:
+    - makedirs: True
+    - user: oracle
+    - group: oinstall
+    - mode: 0755
 
 Install Oracle Prerequisites:
   pkg.installed:
@@ -19,6 +28,7 @@ Install Oracle Prerequisites:
       - ksh
       - mksh
       - elfutils-libelf-devel
+      - expect
 
 Setup Oracle Bash:
   file.blockreplace:

@@ -1,0 +1,14 @@
+#!/usr/bin/env expect
+spawn ./ocm/bin/emocmrsp -no_banner -output ocm.rsp
+expect {
+  "*Email address/User Name:*"
+  {
+    send "\n"
+    exp_continue
+  }
+  "Do you wish to remain uninformed of security issues*"
+  {
+    send "Y\n"
+    exp_continue
+  }
+}
