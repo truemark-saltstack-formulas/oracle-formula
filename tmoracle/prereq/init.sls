@@ -1,3 +1,12 @@
+{% set oracle_inventory = salt['pillar.get']('tmoracle:oracle_inventory') %}
+
+'{{ oracle_inventory }}':
+  file.directory:
+    - makedirs: True
+    - user: oracle
+    - group: oinstall
+    - mode: 0770
+
 Install Oracle Prerequisites:
   pkg.installed:
     - pkgs:

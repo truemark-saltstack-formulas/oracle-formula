@@ -346,7 +346,7 @@ oracle.install.asm.SYSASMPassword={{ sys_password }}
 # Example: oracle.install.asm.diskGroup.name=data
 #
 #-------------------------------------------------------------------------------
-oracle.install.asm.diskGroup.name={{ oracle_diskgroup }}
+oracle.install.asm.diskGroup.name={{ asm_diskgroup }}
 
 #-------------------------------------------------------------------------------
 # Redundancy level to be used by ASM.
@@ -393,7 +393,7 @@ oracle.install.asm.diskGroup.FailureGroups=
 #     oracle.install.asm.diskGroup.disksWithFailureGroupNames=\\.\ORCLDISKDATA0,FGName,\\.\ORCLDISKDATA1,FGName
 #
 #-------------------------------------------------------------------------------
-oracle.install.asm.diskGroup.disksWithFailureGroupNames=/dev/oracleasm/disks/{{ oracle_disk }},
+oracle.install.asm.diskGroup.disksWithFailureGroupNames=
 
 #-------------------------------------------------------------------------------
 # List of disks to create a ASM DiskGroup
@@ -405,7 +405,7 @@ oracle.install.asm.diskGroup.disksWithFailureGroupNames=/dev/oracleasm/disks/{{ 
 #     oracle.install.asm.diskGroup.disks=\\.\ORCLDISKDATA0,\\.\ORCLDISKDATA1
 #
 #-------------------------------------------------------------------------------
-oracle.install.asm.diskGroup.disks=/dev/oracleasm/disks/{{ oracle_disk }}
+oracle.install.asm.diskGroup.disks={{ asm_disks }}
 
 #-------------------------------------------------------------------------------
 # List of failure groups to be marked as QUORUM.
