@@ -1,6 +1,20 @@
 {% set oracle_inventory = salt['pillar.get']('tmoracle:oracle_inventory') %}
 {% set oracle_base = salt['pillar.get']('tmoracle:oracle_base') %}
 
+Install Oracle Prerequisites:
+  pkg.installed:
+    - pkgs:
+      - oracle-database-server-12cR2-preinstall
+      - oracleasm-support
+      - gcc
+      - gcc-c++
+      - nscd
+      - bc
+      - ksh
+      - mksh
+      - elfutils-libelf-devel
+      - expect
+
 '{{ oracle_inventory }}':
   file.directory:
     - makedirs: True
@@ -15,20 +29,6 @@
     - user: oracle
     - group: oinstall
     - mode: 0755
-
-Install Oracle Prerequisites:
-  pkg.installed:
-    - pkgs:
-      - oracle-database-server-12cR2-preinstall
-      - oracleasm-support
-      - gcc
-      - gcc-c++
-      - nscd
-      - bc
-      - ksh
-      - mksh
-      - elfutils-libelf-devel
-      - expect
 
 Setup Oracle Bash:
   file.blockreplace:
