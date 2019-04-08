@@ -11,7 +11,7 @@ function check_retcode() {
   fi
 }
 
-su - oracle -c "cd ${DIR}; ./gridSetup.sh -waitForCompletion -silent -responseFile {{ response_file }}; exit $?"
+su - oracle -c "cd ${DIR}; ./gridSetup.sh -skipPrereqs -waitForCompletion -silent -responseFile {{ response_file }}; exit $?"
 RETCODE="$?"
 check_retcode
 
@@ -23,7 +23,7 @@ check_retcode
 RETCODE="$?"
 check_retcode
 
-su - oracle -c "cd ${DIR}; ./gridSetup.sh -waitForCompletion -silent -executeConfigTools -responseFile {{ response_file }}; exit $?"
+su - oracle -c "cd ${DIR}; ./gridSetup.sh -skipPrereqs -waitForCompletion -silent -executeConfigTools -responseFile {{ response_file }}; exit $?"
 RETCODE="$?"
 check_retcode
 
